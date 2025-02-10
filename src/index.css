@@ -1,0 +1,294 @@
+/* :root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} */
+/* src/index.css or src/styles.css */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
+@import url("https://fonts.cdnfonts.com/css/segoe-script");
+@import url("https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Option 1: Using conic-gradient */
+.sunburst-conic {
+  width: 100%;
+  height: 100vh;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    #522f11,
+    #e98112,
+    #522f11,
+    #e98112,
+    #522f11,
+    #e98112,
+    #522f11,
+    #e98112,
+    #522f11,
+    #e98112,
+    #522f11,
+    #e98112,
+    #522f11,
+    #e98112,
+    #522f11,
+    #e98112,
+    #522f11,
+    #e98112,
+    #522f11
+  );
+}
+.text-stroke {
+  -webkit-text-stroke: 1px #ffb86d;
+}
+/* @keyframes cloudAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px); 
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-cloud {
+  animation: cloudAnimation 3s ease-in-out infinite;
+} */
+@keyframes cloudMove1 {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes cloudMove2 {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes cloudMove3 {
+  0% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes cloudMove4 {
+  0% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(-20);
+  }
+}
+
+.animate-cloud-1 {
+  animation: cloudMove1 7s ease-in-out infinite;
+}
+
+.animate-cloud-2 {
+  animation: cloudMove2 9s ease-in-out infinite;
+}
+
+.animate-cloud-3 {
+  animation: cloudMove3 5s ease-in-out infinite;
+}
+.animate-cloud-4 {
+  animation: cloudMove4 5s ease-in-out infinite;
+}
+
+/* Option 2: Using repeating-linear-gradient */
+.sunburst-linear {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.sunburst-linear::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 4%,
+    #fff1f1 4%,
+    #fff1f1 8%
+  );
+  animation: rotate 60s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* To make it more subtle like the image, add an overlay */
+.sunburst-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.5)
+  );
+  pointer-events: none;
+}
+
+.triple::after {
+  border: 2px solid red;
+  content: "";
+  border-radius: 5px;
+  position: absolute;
+  z-index: 2;
+  width: 90%;
+  height: 90%;
+}
+.triple::before {
+  border: 2px solid yellow;
+  content: "";
+  border-radius: 5px;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 110%;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.logo {
+  position: relative;
+}
+
+.logos-slide {
+  display: flex;
+  gap: 2rem;
+  width: 200%;
+  animation: slide 20s linear infinite;
+}
+
+.div-spacing {
+  @apply px-4 mobile:px-8 md:px-24;
+}
+
+#feather {
+  /* animation: eye 3s ease infinite; */
+}
+#featherr {
+}
+
+#eye {
+  /* animation: eye 3s ease infinite;
+  transform-origin: center;
+  transform-box: fill-box; */
+  animation: eye 3s ease infinite;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+
+@keyframes eye {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
