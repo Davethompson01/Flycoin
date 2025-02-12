@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        secondary: "#E98112",
-        primary: "#522F11",
+        secondary: "#98EB5D",
+        primary: "#1F1F1F",
       },
       fontFamily: {
         "rubik-bubbles": ["Rubik Bubbles", "sans-serif"],

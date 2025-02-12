@@ -74,13 +74,13 @@ const Nav: React.FC<NavProps> = ({
 
   return (
     <div className="fixed z-50 w-full top-0 px-4">
-      <nav className="flex items-center justify-between px-2 sm:px-6 py-4">
+      <nav className="flex  items-center justify-between px-2 sm:px-6 py-4">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex items-center gap-2 bg-[#93E45A] border-[4.35px] border-[#93E45A] py-2 px-4 md:px-8 rounded-[21.89px]"
+          className="flex shadow-xl items-center gap-2 bg-[#93E45A] border-[4.35px] border-[#93E45A] py-2 px-4 md:px-8 rounded-[21.89px]"
         >
           <div className="w-8">
             <img src={logo} alt="Fly Coin Logo" className="w-full" />
@@ -91,7 +91,7 @@ const Nav: React.FC<NavProps> = ({
         </motion.div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8 bg-[#93E45A] border-[4.35px] border-[#93E45A] py-4 px-8 rounded-[21.89px]">
+        <div className="hidden shadow-xl md:flex items-center space-x-8 bg-[#93E45A] border-[4.35px] border-[#93E45A] py-4 px-8 rounded-[21.89px]">
           {navItems.map(({ name, sectionId }) => (
             <motion.div
               key={sectionId}

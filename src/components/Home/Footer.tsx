@@ -2,8 +2,9 @@ import logo from "../../assets/rabbit.png";
 import x from "../../assets/x-Icon.svg";
 import yt from "../../assets/yt-Icon.svg";
 import fb from "../../assets/fb-Icon.svg";
+import { Facebook, Twitter, Youtube } from "lucide-react";
 const Footer = () => {
-  const icons = [x, yt, fb];
+  const icons = [<Facebook />, <Twitter />, <Youtube />];
   return (
     <footer className=" bg-[#1F1F1F] div-spacing py-12 flex flex-col md:flex-row gap-8 items-center justify-between w-full">
       {/* logo */}
@@ -17,18 +18,19 @@ const Footer = () => {
       </div>
       {/* socials */}
       <div className=" text-center">
-        <h1 className=" text-[#FFD4A7]">Follow Us</h1>
+        <h1 className=" text-[#fff]">Follow Us</h1>
         <div className=" flex">
           {icons.map((icon, idx) => (
             <div
               key={idx}
-              className=" flex items-center justify-center size-12"
+              className=" flex items-center text-white justify-center size-12"
             >
-              <img
-                src={icon}
-                alt=""
-                className=" bg-[#97EC5C] border border-[#C3620E] p-2 rounded-lg"
-              />
+              {icon}
+              {/* <icon
+                // src={icon}
+                // alt=""
+                className=" bg-[#97EC5C] border border-[#fff] p-2 rounded-lg"
+              /> */}
             </div>
           ))}
         </div>

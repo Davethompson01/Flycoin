@@ -178,9 +178,9 @@ const FlyCoinGame = () => {
             top: `${birdPosition}px`,
           }}
         >
-          <div className="w-full h-full bg-black rounded-full flex items-center justify-center transform rotate-0">
-            <div className="w-3/4 h-3/4 bg-yellow-400 rounded-full">
-              <div className="w-1/4 h-1/4 bg-white rounded-full absolute top-1/4 left-1/4"></div>
+          <div className="w-full h-full bg-[#1F1F1F] rounded-full flex items-center justify-center transform rotate-0">
+            <div className="w-3/4 h-3/4 bg-[#1F1F1F] rounded-full">
+              <div className="w-1/4 h-1/4 bg-[#93E45A] rounded-full absolute top-1/4 left-1/4"></div>
             </div>
           </div>
           {/* <img src={logo} alt="" /> */}

@@ -20,7 +20,7 @@ const Faq = () => {
   };
   return (
     <div className=" relative bg-[#97EC5C] div-spacing py-28 space-y-6">
-      <h1 className=" text-center text-stroke w-full text-nowrap text-[#522F11] text-xl sm:text-3xl md:text-4xl lg:text-5xl">
+      <h1 className=" text-center text-stroke w-full text-nowrap text-[#fff] text-xl sm:text-3xl md:text-4xl lg:text-5xl">
         Got Questions
       </h1>
       <div className=" space-y-4">
@@ -30,7 +30,7 @@ const Faq = () => {
             className=" bg-[#97EC5C] border-4 border-[#97EC5C] p-4 rounded-xl px-2 lg:px-12 transition-all duration-700"
           >
             <div className=" flex items-center w-full justify-between">
-              <h1 className=" text-xs sm:text-sm lg:text-lg text-[#522F11]">
+              <h1 className=" text-xs sm:text-sm lg:text-lg text-[#fff]">
                 {question}
               </h1>
               <img
