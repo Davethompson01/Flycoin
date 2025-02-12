@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, VolumeX, Trophy, Star, Coins } from "lucide-react";
-// import logo from "../assets/logo.png";
+import logo from "../assets/rabbit.png";
 
 interface Achievement {
   id: string;
@@ -28,9 +27,9 @@ const FlyCoinGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [birdPosition, setBirdPosition] = useState(300);
-  const [obstacleHeight, setObstacleHeight] = useState(200);
-  const [obstacleLeft, setObstacleLeft] = useState(800);
+  const [birdPosition, setBirdPosition] = useState(50); // Percentage of game height
+  const [obstacleHeight, setObstacleHeight] = useState(30); // Percentage of game height
+  const [obstacleLeft, setObstacleLeft] = useState(100); // Percentage of game width
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
   const [coins, setCoins] = useState<Coin[]>([]);
   const [coinsCollected, setCoinsCollected] = useState(0);
@@ -41,12 +40,11 @@ const FlyCoinGame = () => {
     slowTime: false,
   });
 
-  // const [collectedCoins, setCollectedCoins] = useState<number>(0);
-  const gravity = 3;
-  const jumpHeight = 70;
-  const obstacleWidth = 60;
-  const birdWidth = 40;
-  const birdHeight = 40;
+  const gravity = 0.5; // Reduced gravity (percentage of game height)
+  const jumpHeight = 8; // Reduced jump height (percentage of game height)
+  const obstacleWidth = 10; // Percentage of game width
+  const birdWidth = 5; // Percentage of game width
+  const birdHeight = 5; // Percentage of game height
   const gameContainerRef = useRef<HTMLDivElement>(null);
 
   // Initialize achievements
@@ -67,6 +65,7 @@ const FlyCoinGame = () => {
     },
   ]);
 
+  // Handle game updates
   useEffect(() => {
     let timeId: NodeJS.Timeout;
 
@@ -75,10 +74,10 @@ const FlyCoinGame = () => {
         setBirdPosition((position) => position + gravity);
 
         // Check collision with ground or ceiling
-        if (birdPosition >= 560 || birdPosition <= 0) {
+        if (birdPosition >= 95 || birdPosition <= 0) {
           setGameOver(true);
         }
-      }, 24);
+      }, 30); // Increased interval time (50ms instead of 24ms)
     }
 
     return () => {
@@ -86,6 +85,7 @@ const FlyCoinGame = () => {
     };
   }, [gameStarted, gameOver, birdPosition]);
 
+  // Handle obstacle movement
   useEffect(() => {
     let obstacleId: NodeJS.Timeout;
 
@@ -94,29 +94,31 @@ const FlyCoinGame = () => {
         setObstacleLeft((left) => {
           if (left <= -obstacleWidth) {
             setScore((score) => score + 1);
-            return 800;
+            return 100;
           }
-          return left - 5;
+          return left - 0.5; 
         });
-      }, 24);
-
-      return () => {
-        clearInterval(obstacleId);
-      };
+      }, 30); 
     }
+
+    return () => {
+      clearInterval(obstacleId);
+    };
   }, [gameStarted, gameOver]);
 
+  // Handle collision detection
   useEffect(() => {
     const hasCollision =
-      obstacleLeft >= 100 - birdWidth &&
-      obstacleLeft <= 100 + birdWidth &&
-      (birdPosition <= obstacleHeight || birdPosition >= obstacleHeight + 150);
+      obstacleLeft >= 10 - birdWidth &&
+      obstacleLeft <= 10 + birdWidth &&
+      (birdPosition <= obstacleHeight || birdPosition >= obstacleHeight + 20);
 
     if (hasCollision) {
       setGameOver(true);
     }
   }, [birdPosition, obstacleHeight, obstacleLeft]);
 
+  // Handle click/tap to start/jump/restart
   const handleClick = () => {
     if (!gameStarted) {
       setGameStarted(true);
@@ -126,15 +128,14 @@ const FlyCoinGame = () => {
     if (gameOver) {
       setGameStarted(false);
       setGameOver(false);
-      setBirdPosition(300);
-      setObstacleLeft(800);
+      setBirdPosition(50);
+      setObstacleLeft(100);
       setScore(0);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#1F1F1F] py-16">
-      {/* <div className="mb-4 text-white text-2xl font-bold">Score: {score}</div> */}
       {/* Score Display */}
       <div className="flex items-center gap-4 mb-4">
         <div className="text-white text-2xl font-bold">Score: {score}</div>
@@ -157,11 +158,13 @@ const FlyCoinGame = () => {
           )}
         </button>
       </div>
-      {/*  */}
+
+      {/* Game Container */}
       <div
         ref={gameContainerRef}
         onClick={handleClick}
-        className="relative w-[800px] h-[600px] border-4 border-white rounded-lg overflow-hidden bg-[#93E45A] cursor-pointer"
+        onTouchStart={handleClick}
+        className="relative w-[90vw] h-[80vh] max-w-[800px] max-h-[600px] border-4 border-white rounded-lg overflow-hidden bg-[#93E45A] cursor-pointer"
       >
         {!gameStarted ? (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -169,13 +172,14 @@ const FlyCoinGame = () => {
           </div>
         ) : null}
 
+        {/* Bird */}
         <div
           className="absolute transition-all duration-100 ease-linear"
           style={{
-            width: birdWidth,
-            height: birdHeight,
-            left: "100px",
-            top: `${birdPosition}px`,
+            width: `${birdWidth}%`,
+            height: `${birdHeight}%`,
+            left: "10%",
+            top: `${birdPosition}%`,
           }}
         >
           <div className="w-full h-full bg-[#1F1F1F] rounded-full flex items-center justify-center transform rotate-0">
@@ -183,28 +187,29 @@ const FlyCoinGame = () => {
               <div className="w-1/4 h-1/4 bg-[#93E45A] rounded-full absolute top-1/4 left-1/4"></div>
             </div>
           </div>
-          {/* <img src={logo} alt="" /> */}
         </div>
 
+        {/* Obstacles */}
         <div
           className="absolute bg-green-500"
           style={{
-            width: obstacleWidth,
-            height: obstacleHeight,
-            left: obstacleLeft,
+            width: `${obstacleWidth}%`,
+            height: `${obstacleHeight}%`,
+            left: `${obstacleLeft}%`,
             top: 0,
           }}
         />
         <div
           className="absolute bg-green-500"
           style={{
-            width: obstacleWidth,
-            height: "100%",
-            left: obstacleLeft,
-            top: obstacleHeight + 150,
+            width: `${obstacleWidth}%`,
+            height: `${100 - obstacleHeight - 20}%`,
+            left: `${obstacleLeft}%`,
+            top: `${obstacleHeight + 20}%`,
           }}
         />
 
+        {/* Game Over Screen */}
         {gameOver ? (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="text-white text-3xl font-bold">
@@ -213,8 +218,9 @@ const FlyCoinGame = () => {
           </div>
         ) : null}
       </div>
+
       {/* Achievements */}
-      <div className="mt-4 bg-white/10 rounded-lg p-4 w-[800px]">
+      <div className="mt-4 bg-white/10 rounded-lg p-4 w-[90vw] max-w-[800px]">
         <div className="text-white font-bold mb-2">Achievements</div>
         <div className="grid grid-cols-2 gap-4">
           {achievements.map((achievement) => (
