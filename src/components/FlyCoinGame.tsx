@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { Volume2, VolumeX, Trophy, Star, Coins } from "lucide-react";
-import logo from "../assets/rabbit.png";
 
 interface Achievement {
   id: string;
@@ -27,9 +26,9 @@ const FlyCoinGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [birdPosition, setBirdPosition] = useState(50); // Percentage of game height
-  const [obstacleHeight, setObstacleHeight] = useState(30); // Percentage of game height
-  const [obstacleLeft, setObstacleLeft] = useState(100); // Percentage of game width
+  const [birdPosition, setBirdPosition] = useState(50);
+  const [obstacleHeight, setObstacleHeight] = useState(30);
+  const [obstacleLeft, setObstacleLeft] = useState(100);
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
   const [coins, setCoins] = useState<Coin[]>([]);
   const [coinsCollected, setCoinsCollected] = useState(0);
@@ -40,12 +39,16 @@ const FlyCoinGame = () => {
     slowTime: false,
   });
 
-  const gravity = 0.5; // Reduced gravity (percentage of game height)
-  const jumpHeight = 8; // Reduced jump height (percentage of game height)
-  const obstacleWidth = 10; // Percentage of game width
-  const birdWidth = 5; // Percentage of game width
-  const birdHeight = 5; // Percentage of game height
+  const gravity = 0.5;
+  const jumpHeight = 8;
+  const obstacleWidth = 10;
+  const birdWidth = 5;
+  const birdHeight = 5;
   const gameContainerRef = useRef<HTMLDivElement>(null);
+
+  // Array of colors for background change
+  const colors = ["#93E45A", "#FF6F61", "#6B5B95", "#88B04B", "#F7CAC9"];
+  const [currentColor, setCurrentColor] = useState(colors[0]);
 
   // Initialize achievements
   const [achievements, setAchievements] = useState<Achievement[]>([
@@ -77,7 +80,7 @@ const FlyCoinGame = () => {
         if (birdPosition >= 95 || birdPosition <= 0) {
           setGameOver(true);
         }
-      }, 30); // Increased interval time (50ms instead of 24ms)
+      }, 30);
     }
 
     return () => {
@@ -96,15 +99,29 @@ const FlyCoinGame = () => {
             setScore((score) => score + 1);
             return 100;
           }
-          return left - 0.5; 
+          return left - 0.5;
         });
-      }, 30); 
+      }, 40);
     }
 
     return () => {
       clearInterval(obstacleId);
     };
   }, [gameStarted, gameOver]);
+
+  // Change color every 5 levels
+  useEffect(() => {
+    const level = Math.floor(score / 5);
+    setCurrentColor(colors[level % colors.length]);
+  }, [score]);
+
+  // Randomize obstacle gap
+  useEffect(() => {
+    if (obstacleLeft <= -obstacleWidth) {
+      const randomGap = Math.floor(Math.random() * 30) + 10; // Random gap between 10% and 40%
+      setObstacleHeight(randomGap);
+    }
+  }, [obstacleLeft]);
 
   // Handle collision detection
   useEffect(() => {
@@ -164,7 +181,8 @@ const FlyCoinGame = () => {
         ref={gameContainerRef}
         onClick={handleClick}
         onTouchStart={handleClick}
-        className="relative w-[90vw] h-[80vh] max-w-[800px] max-h-[600px] border-4 border-white rounded-lg overflow-hidden bg-[#93E45A] cursor-pointer"
+        className="relative w-[90vw] h-[80vh] max-w-[800px] max-h-[600px] border-4 border-white rounded-lg overflow-hidden cursor-pointer"
+        style={{ backgroundColor: currentColor }} // Dynamic background color
       >
         {!gameStarted ? (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -246,6 +264,287 @@ const FlyCoinGame = () => {
 };
 
 export default FlyCoinGame;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { useState, useEffect, useRef } from "react";
+// import { Volume2, VolumeX, Trophy, Star, Coins } from "lucide-react";
+// import logo from "../assets/rabbit.png";
+
+// interface Achievement {
+//   id: string;
+//   name: string;
+//   description: string;
+//   achieved: boolean;
+//   icon: JSX.Element;
+// }
+
+// interface PowerUp {
+//   id: number;
+//   type: "shield" | "multiplier" | "slowTime";
+//   position: { x: number; y: number };
+// }
+
+// interface Coin {
+//   id: number;
+//   position: { x: number; y: number };
+//   collected: boolean;
+// }
+
+// const FlyCoinGame = () => {
+//   const [gameStarted, setGameStarted] = useState(false);
+//   const [gameOver, setGameOver] = useState(false);
+//   const [score, setScore] = useState(0);
+//   const [highScore, setHighScore] = useState(0);
+//   const [birdPosition, setBirdPosition] = useState(50); // Percentage of game height
+//   const [obstacleHeight, setObstacleHeight] = useState(30); // Percentage of game height
+//   const [obstacleLeft, setObstacleLeft] = useState(100); // Percentage of game width
+//   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
+//   const [coins, setCoins] = useState<Coin[]>([]);
+//   const [coinsCollected, setCoinsCollected] = useState(0);
+//   const [muted, setMuted] = useState(false);
+//   const [activeEffects, setActiveEffects] = useState({
+//     shield: false,
+//     multiplier: false,
+//     slowTime: false,
+//   });
+
+//   const gravity = 0.5; // Reduced gravity (percentage of game height)
+//   const jumpHeight = 8; // Reduced jump height (percentage of game height)
+//   const obstacleWidth = 10; // Percentage of game width
+//   const birdWidth = 5; // Percentage of game width
+//   const birdHeight = 5; // Percentage of game height
+//   const gameContainerRef = useRef<HTMLDivElement>(null);
+
+//   // Initialize achievements
+//   const [achievements, setAchievements] = useState<Achievement[]>([
+//     {
+//       id: "first-10",
+//       name: "Getting Started",
+//       description: "Score 10 points",
+//       achieved: false,
+//       icon: <Trophy className="w-6 h-6 text-yellow-400" />,
+//     },
+//     {
+//       id: "coin-collector",
+//       name: "Coin Collector",
+//       description: "Collect 10 coins",
+//       achieved: false,
+//       icon: <Coins className="w-6 h-6 text-[#1F1F1F]" />,
+//     },
+//   ]);
+
+//   // Handle game updates
+//   useEffect(() => {
+//     let timeId: NodeJS.Timeout;
+
+//     if (gameStarted && !gameOver) {
+//       timeId = setInterval(() => {
+//         setBirdPosition((position) => position + gravity);
+
+//         // Check collision with ground or ceiling
+//         if (birdPosition >= 95 || birdPosition <= 0) {
+//           setGameOver(true);
+//         }
+//       }, 30); // Increased interval time (50ms instead of 24ms)
+//     }
+
+//     return () => {
+//       clearInterval(timeId);
+//     };
+//   }, [gameStarted, gameOver, birdPosition]);
+
+//   // Handle obstacle movement
+//   useEffect(() => {
+//     let obstacleId: NodeJS.Timeout;
+
+//     if (gameStarted && !gameOver) {
+//       obstacleId = setInterval(() => {
+//         setObstacleLeft((left) => {
+//           if (left <= -obstacleWidth) {
+//             setScore((score) => score + 1);
+//             return 100;
+//           }
+//           return left - 0.5; // Reduced movement increment (0.5% instead of 1%)
+//         });
+//       }, 40); // Increased interval time (50ms instead of 24ms)
+//     }
+
+//     return () => {
+//       clearInterval(obstacleId);
+//     };
+//   }, [gameStarted, gameOver]);
+
+//   // Handle collision detection
+//   useEffect(() => {
+//     const hasCollision =
+//       obstacleLeft >= 10 - birdWidth &&
+//       obstacleLeft <= 10 + birdWidth &&
+//       (birdPosition <= obstacleHeight || birdPosition >= obstacleHeight + 20);
+
+//     if (hasCollision) {
+//       setGameOver(true);
+//     }
+//   }, [birdPosition, obstacleHeight, obstacleLeft]);
+
+//   // Handle click/tap to start/jump/restart
+//   const handleClick = () => {
+//     if (!gameStarted) {
+//       setGameStarted(true);
+//     } else if (!gameOver) {
+//       setBirdPosition((position) => position - jumpHeight);
+//     }
+//     if (gameOver) {
+//       setGameStarted(false);
+//       setGameOver(false);
+//       setBirdPosition(50);
+//       setObstacleLeft(100);
+//       setScore(0);
+//     }
+//   };
+
+//   return (
+//     <div className="flex flex-col items-center justify-center min-h-screen bg-[#1F1F1F] py-16">
+//       {/* Score Display */}
+//       <div className="flex items-center gap-4 mb-4">
+//         <div className="text-white text-2xl font-bold">Score: {score}</div>
+//         <div className="flex items-center gap-2 text-[#93E45A]">
+//           <Coins className="w-6 h-6" />
+//           <span className="text-xl">{coinsCollected}</span>
+//         </div>
+//         <div className="text-white text-xl">High Score: {highScore}</div>
+//         <button
+//           onClick={(e) => {
+//             e.stopPropagation();
+//             setMuted(!muted);
+//           }}
+//           className="p-2 rounded-full bg-white/20 hover:bg-white/30"
+//         >
+//           {muted ? (
+//             <VolumeX className="text-white" />
+//           ) : (
+//             <Volume2 className="text-white" />
+//           )}
+//         </button>
+//       </div>
+
+//       {/* Game Container */}
+//       <div
+//         ref={gameContainerRef}
+//         onClick={handleClick}
+//         onTouchStart={handleClick}
+//         className="relative w-[90vw] h-[80vh] max-w-[800px] max-h-[600px] border-4 border-white rounded-lg overflow-hidden bg-[#93E45A] cursor-pointer"
+//       >
+//         {!gameStarted ? (
+//           <div className="absolute inset-0 flex items-center justify-center">
+//             <div className="text-white text-3xl font-bold">Click to Start</div>
+//           </div>
+//         ) : null}
+
+//         {/* Bird */}
+//         <div
+//           className="absolute transition-all duration-100 ease-linear"
+//           style={{
+//             width: `${birdWidth}%`,
+//             height: `${birdHeight}%`,
+//             left: "10%",
+//             top: `${birdPosition}%`,
+//           }}
+//         >
+//           <div className="w-full h-full bg-[#1F1F1F] rounded-full flex items-center justify-center transform rotate-0">
+//             <div className="w-3/4 h-3/4 bg-[#1F1F1F] rounded-full">
+//               <div className="w-1/4 h-1/4 bg-[#93E45A] rounded-full absolute top-1/4 left-1/4"></div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Obstacles */}
+//         <div
+//           className="absolute bg-green-500"
+//           style={{
+//             width: `${obstacleWidth}%`,
+//             height: `${obstacleHeight}%`,
+//             left: `${obstacleLeft}%`,
+//             top: 0,
+//           }}
+//         />
+//         <div
+//           className="absolute bg-green-500"
+//           style={{
+//             width: `${obstacleWidth}%`,
+//             height: `${100 - obstacleHeight - 20}%`,
+//             left: `${obstacleLeft}%`,
+//             top: `${obstacleHeight + 20}%`,
+//           }}
+//         />
+
+//         {/* Game Over Screen */}
+//         {gameOver ? (
+//           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+//             <div className="text-white text-3xl font-bold">
+//               Game Over! Click to restart
+//             </div>
+//           </div>
+//         ) : null}
+//       </div>
+
+//       {/* Achievements */}
+//       <div className="mt-4 bg-white/10 rounded-lg p-4 w-[90vw] max-w-[800px]">
+//         <div className="text-white font-bold mb-2">Achievements</div>
+//         <div className="grid grid-cols-2 gap-4">
+//           {achievements.map((achievement) => (
+//             <div
+//               key={achievement.id}
+//               className={`flex items-center gap-2 p-2 rounded-lg ${
+//                 achievement.achieved ? "bg-white/20" : "bg-white/5"
+//               }`}
+//             >
+//               {achievement.icon}
+//               <div>
+//                 <div className="text-white font-bold">{achievement.name}</div>
+//                 <div className="text-white/80 text-sm">
+//                   {achievement.description}
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default FlyCoinGame;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React, { useState, useEffect, useRef } from "react";
 // import { motion, AnimatePresence } from "framer-motion";
